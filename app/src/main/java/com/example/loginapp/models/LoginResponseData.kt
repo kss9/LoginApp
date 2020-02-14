@@ -8,7 +8,6 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class LoginResponseData(
-
     var token: UserToken,
     var data: ArrayList<LoginData>,
     val msg:String ,

@@ -2,10 +2,10 @@ package com.example.loginapp.api
 
 import com.example.loginapp.models.LoginResponse
 import com.example.loginapp.models.LoginResponseData
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 
 interface Api {
@@ -21,4 +21,19 @@ interface Api {
         @Field("password") password: String
 
     ):Call<LoginResponseData>
+
+    /*@Multipart
+    @POST("customer-app/user/upload/profile-picture/")
+    fun uploadProfilePic(
+        @HeaderMap headerMap: Map<String, String>,
+
+        @Part("app_name") appName: RequestBody,
+        @Part("app_version") appVersion: RequestBody,
+
+        @Part("device_id") deviceId: RequestBody,
+        @Part user_profile_picture: MultipartBody.Part
+    ): Call<MessageResponse>*/
+
+
+
 }
