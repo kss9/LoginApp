@@ -1,6 +1,8 @@
 package com.example.loginapp.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -8,16 +10,19 @@ import com.example.loginapp.R
 import com.example.loginapp.api.RetrofitClient
 import com.example.loginapp.models.LoginResponseData
 import kotlinx.android.synthetic.main.activity_main.*
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
+    private val sharedPrefFile = "kotlinsharedpreference"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         login_btn.setOnClickListener {
 
@@ -49,6 +54,21 @@ class MainActivity : AppCompatActivity() {
                         //response.body()?.msg.length
                         //response.body()?.data?.get(0)?.organization_name
 
+                        val access_token: String? = response.body()?.token?.access_token
+                        val refresh_token= response.body()?.token?.refresh_token
+                        val primary_postnid=response.body()?.data?.get(0)?.primary_postnid
+                        val organization_name=response.body()?.data?.get(0)?.organization_name
+                        val user_login_s=response.body()?.data?.get(0)?.user_login_s
+                        val editor:SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putString("access_token_key",access_token)
+                        editor.putString("refresh_token_key",refresh_token)
+                        editor.putString("primary_postnid_key",primary_postnid)
+                        editor.putString("organization_name_key",organization_name)
+                        editor.putString("user_login_s_key",user_login_s)
+                        editor.apply()
+                        editor.commit()
+                        Toast.makeText(applicationContext,"Data stored to shared preferences",Toast.LENGTH_LONG)
+
                         var len = response.body()?.data?.get(0)?.organization_name
                         //var len = response.body()?.msg?.length
                             if(len.equals(null))//login fail case
@@ -58,8 +78,20 @@ class MainActivity : AppCompatActivity() {
                             } else //login success case
                             {
 
+                                /*val id:Int = Integer.parseInt(editId.text.toString())
+                                val name:String = editName.text.toString()
+                                val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+                                editor.putInt("id_key",id)
+                                editor.putString("name_key",name)
+                                editor.apply()
+                                editor.commit()
+                                Toast.makeText(applicationContext, "Saved", Toast.LENGTH_LONG).show()*/
+
+
+
                                 startActivity(Intent(this@MainActivity, OnLogin::class.java))
                                 //Toast.makeText(applicationContext, response.body()?.data?.get(0)?.organization_name , Toast.LENGTH_LONG).show()
+
                             }
                     }
                 })
