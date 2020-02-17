@@ -14,8 +14,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity()
+{
     private val sharedPrefFile = "kotlinsharedpreference"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
         login_btn.setOnClickListener {
-
             val app_name = "com.tatamotors.egurucrm"
             val app_version = "3.0.0"
             val device_id = "C4D8C9E6-F09B-458E-9491-7343EEE84192"
@@ -52,22 +51,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     override fun onResponse(call: Call<LoginResponseData>, response: Response<LoginResponseData>) {
                         //response.body()?.msg.length
-                        //response.body()?.data?.get(0)?.organization_name
-
-                        val access_token: String? = response.body()?.token?.access_token
-                        val refresh_token= response.body()?.token?.refresh_token
-                        val primary_postnid=response.body()?.data?.get(0)?.primary_postnid
-                        val organization_name=response.body()?.data?.get(0)?.organization_name
-                        val user_login_s=response.body()?.data?.get(0)?.user_login_s
-                        val editor:SharedPreferences.Editor = sharedPreferences.edit()
-                        editor.putString("access_token_key",access_token)
-                        editor.putString("refresh_token_key",refresh_token)
-                        editor.putString("primary_postnid_key",primary_postnid)
-                        editor.putString("organization_name_key",organization_name)
-                        editor.putString("user_login_s_key",user_login_s)
-                        editor.apply()
-                        editor.commit()
-                        Toast.makeText(applicationContext,"Data stored to shared preferences",Toast.LENGTH_LONG)
 
                         var len = response.body()?.data?.get(0)?.organization_name
                         //var len = response.body()?.msg?.length
@@ -75,23 +58,22 @@ class MainActivity : AppCompatActivity() {
                             {
                                Toast.makeText(applicationContext, "Username and password are not matching.", Toast.LENGTH_LONG).show()
                                //Toast.makeText(applicationContext, response.body()?.msg , Toast.LENGTH_LONG).show()
-                            } else //login success case
+                            } else //login  case
                             {
-
-                                /*val id:Int = Integer.parseInt(editId.text.toString())
-                                val name:String = editName.text.toString()
-                                val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                                editor.putInt("id_key",id)
-                                editor.putString("name_key",name)
+                                val access_token: String? = response.body()?.token?.access_token
+                                val refresh_token= response.body()?.token?.refresh_token
+                                val primary_postnid=response.body()?.data?.get(0)?.primary_postnid
+                                val organization_name=response.body()?.data?.get(0)?.organization_name
+                                val user_login_s=response.body()?.data?.get(0)?.user_login_s
+                                val editor:SharedPreferences.Editor = sharedPreferences.edit()
+                                editor.putString("access_token_key",access_token)
+                                editor.putString("refresh_token_key",refresh_token)
+                                editor.putString("primary_postnid_key",primary_postnid)
+                                editor.putString("organization_name_key",organization_name)
+                                editor.putString("user_login_s_key",user_login_s)
                                 editor.apply()
                                 editor.commit()
-                                Toast.makeText(applicationContext, "Saved", Toast.LENGTH_LONG).show()*/
-
-
-
                                 startActivity(Intent(this@MainActivity, OnLogin::class.java))
-                                //Toast.makeText(applicationContext, response.body()?.data?.get(0)?.organization_name , Toast.LENGTH_LONG).show()
-
                             }
                     }
                 })

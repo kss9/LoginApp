@@ -30,46 +30,36 @@ class OnLogin : AppCompatActivity() {
          super.onCreate(savedInstanceState)
          setContentView(R.layout.activity_on_login)
 
-        button = findViewById<View>(R.id.button) as Button
+        button = findViewById<View>(R.id.button_pickImage) as Button
         textView = findViewById<View>(R.id.textView) as TextView
 
          val sharedPreferences: SharedPreferences = this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
-         val sharedAccessTokenValue = sharedPreferences.getString("access_token_key","defaultname")
-         val sharedRefreshTokenValue = sharedPreferences.getString("refresh_token_key","defaultname")
-         val sharedPrimaryPostnIdValue = sharedPreferences.getString("primary_postnid_key","defaultname")
-         val sharedOrganizationNameValue = sharedPreferences.getString("organization_name_key","defaultname")
-         val sharedUserLoginSValue = sharedPreferences.getString("user_login_s_key","defaultname")
+         val sharedAccessTokenValue = sharedPreferences.getString("access_token_key","")
+         val sharedRefreshTokenValue = sharedPreferences.getString("refresh_token_key","")
+         val sharedPrimaryPostnIdValue = sharedPreferences.getString("primary_postnid_key","")
+         val sharedOrganizationNameValue = sharedPreferences.getString("organization_name_key","")
+         val sharedUserLoginSValue = sharedPreferences.getString("user_login_s_key","")
 
 
-        if(sharedAccessTokenValue.equals("defaultname") && sharedRefreshTokenValue.equals("defaultname") && sharedPrimaryPostnIdValue.equals("defaultname") && sharedOrganizationNameValue.equals("defaultname") && sharedUserLoginSValue.equals("defaultname")){
+        if(sharedAccessTokenValue.equals("") && sharedRefreshTokenValue.equals("") && sharedPrimaryPostnIdValue.equals("") && sharedOrganizationNameValue.equals("") && sharedUserLoginSValue.equals("")){
             //ShowId.setText("default id: ${sharedIdValue.toString()}")
             Toast.makeText(applicationContext, "hello", Toast.LENGTH_LONG).show()
 
         }else{
            // textView!!.text=sharedAccessTokenValue+" "+sharedRefreshTokenValue+" "+sharedPrimaryPostnIdValue+" "+sharedOrganizationNameValue+" "+sharedUserLoginSValue
-            //ShowName.setText().toString()
-            //ShowId.setText(sharedIdValue.toString())
-            textView!!.setText(sharedAccessTokenValue+" "+sharedRefreshTokenValue+" "+sharedPrimaryPostnIdValue+" "+sharedOrganizationNameValue+" "+sharedUserLoginSValue).toString()
-            Toast.makeText(applicationContext, "hii", Toast.LENGTH_LONG).show()
+
+            //textView!!.setText(sharedAccessTokenValue+" "+sharedRefreshTokenValue+" "+sharedPrimaryPostnIdValue+" "+sharedOrganizationNameValue+" "+sharedUserLoginSValue).toString()
+            Toast.makeText(applicationContext, "Welcome "+sharedUserLoginSValue, Toast.LENGTH_LONG).show()
 
         }
 
-
-        /*val sharedIdValue = sharedPreferences.getInt("id_key",0)
-        val sharedNameValue = sharedPreferences.getString("name_key","defaultname")
-        if(sharedIdValue.equals(0) && sharedNameValue.equals("defaultname")){
-            ShowName.setText("default name: ${sharedNameValue}").toString()
-            ShowId.setText("default id: ${sharedIdValue.toString()}")
-        }else{
-            ShowName.setText(sharedNameValue).toString()
-            ShowId.setText(sharedIdValue.toString())
-        }*/
-
-
-         button!!.setOnClickListener { galleryIntent() }
+         button_pickImage!!.setOnClickListener { galleryIntent() }
          button_logout.setOnClickListener {
-
+             val editor = sharedPreferences.edit()
+             editor.clear()
+             editor.apply()
+             startActivity(Intent(this, MainActivity::class.java))
          }
      }
 
@@ -120,10 +110,9 @@ class OnLogin : AppCompatActivity() {
      }
 
 
-    private fun callUploadService(filepath:String) {
-
+    private fun callUploadService(filepath:String)
+    {
         textView?.text
-
     }
 
  }
